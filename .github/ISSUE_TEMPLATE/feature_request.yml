@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a physics, numerical, visualization, or workflow improvement.
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What scientific or usability problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the requested model, calculation, plot, export, or workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation idea
+      description: If relevant, describe an analytic reference, benchmark, or test that could validate it.
