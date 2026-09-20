@@ -571,7 +571,7 @@ st.markdown(
 )
 
 with st.sidebar:
-    st.header("Physical configuration")
+    st.header("1 · Setup — Physical model")
     load_config(st.file_uploader("Import configuration", type=["json"]))
     st.selectbox("Dimension", [1, 2], key="dimension")
     st.number_input("Linear size N", min_value=4, max_value=128, step=1, key="size")
@@ -579,7 +579,7 @@ with st.sidebar:
     st.number_input("Magnetic field h", min_value=-10.0, max_value=10.0, key="field")
     st.number_input("Temperature T (J/kB)", min_value=0.05, max_value=20.0, key="temperature")
     st.number_input("Random seed", min_value=0, max_value=10_000_000, step=1, key="seed")
-    st.subheader("Monte Carlo update budget")
+    st.subheader("Run controls — Monte Carlo budget")
     c1, c2 = st.columns(2)
     c1.number_input("Equilibration update cycles", min_value=0, max_value=200000, step=50, key="eq_sweeps")
     c2.number_input("Measurement update cycles", min_value=10, max_value=200000, step=50, key="mc_sweeps")
@@ -612,17 +612,19 @@ with st.sidebar:
     if int(st.session_state.size) % 2:
         st.caption("Odd periodic N: checkerboard Metropolis is not bipartite and will fall back to random-site Metropolis; heat-bath uses a sequential exact fallback.")
 
+st.caption("Workspace order: Setup → Run → Results → Analysis → Verification / Export.")
+
 overview_tab, methods_tab, equilibration_tab, d1_tab, d2_tab, finite_tab, snapshot_tab, external_tab, validation_tab = st.tabs(
     [
-        "Overview",
-        "Method comparison",
-        "Equilibration",
-        "1D vs exact",
-        "2D vs Onsager",
-        "Finite size",
-        "Snapshots",
-        "External data",
-        "Validation",
+        "1 · Overview",
+        "2 · Run — Method comparison",
+        "3 · Diagnostics — Equilibration",
+        "4 · Reference — 1D exact",
+        "5 · Reference — 2D Onsager",
+        "6 · Scale study — Finite size",
+        "7 · Results — Snapshots",
+        "8 · Data — External comparison",
+        "9 · Verification",
     ]
 )
 
