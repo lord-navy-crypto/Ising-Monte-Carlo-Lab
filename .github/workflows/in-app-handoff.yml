@@ -1,0 +1,28 @@
+name: In-app setup handoff smoke check
+
+on:
+  pull_request:
+    paths: ["app.py", ".github/workflows/in-app-handoff.yml"]
+  push:
+    branches: [main]
+    paths: ["app.py", ".github/workflows/in-app-handoff.yml"]
+
+jobs:
+  syntax-and-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify Streamlit app syntax and local pin/restore controls
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path("app.py").read_text(encoding="utf-8")
+          compile(source, "app.py", "exec")
+          assert "Pin current setup" in source
+          assert "Restore pinned setup" in source
+          assert "for key in RESULT_KEYS:" in source
+          print("PASS: Ising session handoff source contract")
+          PY
