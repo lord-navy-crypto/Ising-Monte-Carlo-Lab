@@ -572,6 +572,23 @@ st.markdown(
 
 with st.sidebar:
     st.header("1 · Setup — Physical model")
+    with st.expander("Quick setup handoff · no file transfer", expanded=False):
+        st.caption("Pin your current Monte Carlo settings inside the current session, try another experiment, then restore the pinned inputs without exporting/importing a JSON file.")
+        if st.button("Pin current setup", key="pin_ising_setup"):
+            st.session_state["_pinned_ising_setup"] = {
+                key: st.session_state[key] for key in defaults()
+            }
+            st.success("Experiment setup pinned locally.")
+        pinned = st.session_state.get("_pinned_ising_setup")
+        if isinstance(pinned, dict):
+            st.caption(f"Pinned {len(pinned)} input values. Restoring clears old results so figures cannot be mistaken for the restored setup.")
+            if st.button("Restore pinned setup", key="restore_ising_setup"):
+                for key in defaults():
+                    if key in pinned:
+                        st.session_state[key] = pinned[key]
+                for key in RESULT_KEYS:
+                    st.session_state[key] = None
+                st.rerun()
     load_config(st.file_uploader("Import configuration", type=["json"]))
     st.selectbox("Dimension", [1, 2], key="dimension")
     st.number_input("Linear size N", min_value=4, max_value=128, step=1, key="size")
